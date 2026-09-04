@@ -51,7 +51,7 @@ MODEL_NAMES = [
 ]
 
 # QAOA depths shipped per architecture; bundle keys are ``<model>/p<p>``.
-P_VALUES = [1, 2, 3, 4]
+P_VALUES = [1, 2, 3, 4, 5]
 MODEL_KEYS = [f"{model}/p{p}" for model in MODEL_NAMES for p in P_VALUES]
 
 # Graph-consuming model exercised by the behavioral tests alongside the
