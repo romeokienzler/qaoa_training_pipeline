@@ -79,6 +79,16 @@ jobs:
           make style
         if: ${{ !cancelled() }}
         shell: bash
+      - name: Security Scan (bandit)
+        run: |
+          make security_ci
+        if: ${{ !cancelled() }}
+        shell: bash
+      - name: Dependency Audit (pip-audit, non-blocking)
+        run: |
+          pip-audit || true
+        if: ${{ !cancelled() }}
+        shell: bash
   training-pipeline:
     if: github.repository_owner == 'qiskit-community'
     runs-on: ${{ matrix.os }}

@@ -20,12 +20,21 @@ else
 	CONCURRENCY := $(shell echo "$(NPROCS) 2" | awk '{printf "%.0f", $$1 / $$2}')
 endif
 
-.PHONY: lint style black test test_ci coverage clean
+.PHONY: lint style black test test_ci coverage clean security security_ci
 
-all_check: style lint
+all_check: style lint security_ci
 
 lint:
 	pylint -rn qaoa_training_pipeline test
+
+# Static security scan (SAST) + dependency vulnerability audit.
+# `security` reports everything (local dev); `security_ci` gates on medium+.
+security:
+	bandit -c pyproject.toml -r qaoa_training_pipeline
+	pip-audit || true
+
+security_ci:
+	bandit -c pyproject.toml -r qaoa_training_pipeline --severity-level medium --confidence-level medium
 
 black:
 	python -m black qaoa_training_pipeline test
